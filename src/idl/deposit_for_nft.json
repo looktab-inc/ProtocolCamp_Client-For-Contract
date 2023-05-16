@@ -227,8 +227,5 @@
       "name": "NoNftLeftError",
       "msg": "There is not NFTs left to withdraw sol"
     }
-  ],
-  "metadata": {
-    "address": "GKcWYEKo8ZWKRo82e2Vgd92JwVeqwT5XNfyMmR4j4sfX"
-  }
+  ]
 }
