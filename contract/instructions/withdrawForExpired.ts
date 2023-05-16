@@ -1,16 +1,20 @@
-import { TransactionInstruction, PublicKey, AccountMeta } from "@solana/web3.js" // eslint-disable-line @typescript-eslint/no-unused-vars
-import BN from "bn.js" // eslint-disable-line @typescript-eslint/no-unused-vars
-import * as borsh from "@project-serum/borsh" // eslint-disable-line @typescript-eslint/no-unused-vars
-import * as types from "../types" // eslint-disable-line @typescript-eslint/no-unused-vars
-import { PROGRAM_ID } from "../programId"
+import {
+  TransactionInstruction,
+  PublicKey,
+  AccountMeta,
+} from "@solana/web3.js"; // eslint-disable-line @typescript-eslint/no-unused-vars
+import BN from "bn.js"; // eslint-disable-line @typescript-eslint/no-unused-vars
+import * as borsh from "@project-serum/borsh"; // eslint-disable-line @typescript-eslint/no-unused-vars
+import * as types from "../types"; // eslint-disable-line @typescript-eslint/no-unused-vars
+import { PROGRAM_ID } from "../programId";
 
 export interface WithdrawForExpiredAccounts {
-  bankAccount: PublicKey
-  pdaAuth: PublicKey
-  solVault: PublicKey
-  bankAuth: PublicKey
-  systemProgram: PublicKey
-  clientAccount: PublicKey
+  bankAccount: PublicKey;
+  pdaAuth: PublicKey;
+  solVault: PublicKey;
+  bankAuth: PublicKey;
+  systemProgram: PublicKey;
+  clientAccount: PublicKey;
 }
 
 export function withdrawForExpired(accounts: WithdrawForExpiredAccounts) {
@@ -21,9 +25,9 @@ export function withdrawForExpired(accounts: WithdrawForExpiredAccounts) {
     { pubkey: accounts.bankAuth, isSigner: true, isWritable: true },
     { pubkey: accounts.systemProgram, isSigner: false, isWritable: false },
     { pubkey: accounts.clientAccount, isSigner: false, isWritable: true },
-  ]
-  const identifier = Buffer.from([90, 123, 129, 146, 41, 253, 69, 183])
-  const data = identifier
-  const ix = new TransactionInstruction({ keys, programId: PROGRAM_ID, data })
-  return ix
+  ];
+  const identifier = Buffer.from([90, 123, 129, 146, 41, 253, 69, 183]);
+  const data = identifier;
+  const ix = new TransactionInstruction({ keys, programId: PROGRAM_ID, data });
+  return ix;
 }
