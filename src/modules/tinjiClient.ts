@@ -81,9 +81,17 @@ export class TinjiContract {
     return transaction;
   }
 
-  withdrawForExpired() {}
+  async withdrawForExpired(): Promise<string> {
+    const transaction = "";
 
-  withdrawForVerified() {}
+    return transaction;
+  }
+
+  async withdrawForVerified(): Promise<string> {
+    const transaction = "";
+
+    return transaction;
+  }
 
   private getPdaAuthPubkey(bankAccountPubkey: web3.PublicKey): web3.PublicKey {
     let [pdaAuthPubKey, _pdaBump] = web3.PublicKey.findProgramAddressSync(
