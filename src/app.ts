@@ -14,7 +14,7 @@ async function main() {
   // const bankWallet = new Wallet(bankKeypair);
 
   // 1. Provider and Contract Program
-  const tinjiProvider = await getTinjiProvider(bankWallet);
+  const tinjiProvider = await getTinjiProvider(bankWallet, "http://127.0.0.1:8899");
   const tinjiProgram = await getTinjiProgram(tinjiProvider);
 
   // airdrop into bankWallet
@@ -107,6 +107,10 @@ async function main() {
   );
   console.log(`BankWallet Balance: ${bankWalletBalance}`);
   console.log(`Cleint Balance: ${clientBalance}`);
+
+  //////////////////////// Tinji NFT
+
+
 }
 
 main();
