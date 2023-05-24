@@ -3,29 +3,29 @@ import { Umi, createSignerFromKeypair } from "@metaplex-foundation/umi";
 import { createUmi } from "@metaplex-foundation/umi-bundle-defaults";
 import { mintV2, mplCandyMachine } from "@metaplex-foundation/mpl-candy-machine";
 import { nftStorageUploader } from "@metaplex-foundation/umi-uploader-nft-storage";
-import { web3 } from "@project-serum/anchor";
+import { Wallet, web3 } from "@project-serum/anchor";
 import { signerIdentity } from "@metaplex-foundation/umi";
 import { generateSigner } from "@metaplex-foundation/umi";
 import { transactionBuilder } from "@metaplex-foundation/umi";
 import { setComputeUnitLimit } from "@metaplex-foundation/mpl-essentials";
 import { TinjiContract } from "./tinjiContract";
-import { getTinjiProgram, getTinjiProvider } from "../config/config";
+import { getTinjiProgram, getTinjiProvider } from "../config/contractConfig";
 
 
 export class TinjiNft {
     private umi: Umi;
-    readonly bankWallet: web3.Keypair;
+    readonly bankKeypair: web3.Keypair;
     
     constructor(
         network: string,
-        bankWallet: web3.Keypair
+        bankKeypair: web3.Keypair
     ) {
         this.umi = this.initUmi(network);
-        this.bankWallet = bankWallet;
+        this.bankKeypair = bankKeypair;
         
         const umiKeypair = {
-            publicKey: umilib.publicKey(bankWallet.publicKey),
-            secretKey: new Uint8Array(bankWallet.secretKey),
+            publicKey: umilib.publicKey(bankKeypair.publicKey),
+            secretKey: new Uint8Array(bankKeypair.secretKey),
         }
         const umiSigner = createSignerFromKeypair(this.umi, umiKeypair);
 
@@ -58,9 +58,11 @@ export class TinjiNft {
             ).sendAndConfirm(this.umi);
         
         // TODO : Deposit Sol into Tinji Contract.
-        const tinjiProvider = await getTinjiProvider(this.bankWallet, "http://127.0.0.1:8899");
+
+        const bankWallet = new Wallet(this.bankKeypair);
+        const tinjiProvider = await getTinjiProvider(bankWallet, "http://127.0.0.1:8899");
         const tinjiProgram = await getTinjiProgram(tinjiProvider);
-        const tinjiContract = new TinjiContract(tinjiProvider, tinjiProgram, this.bankWallet);
+        const tinjiContract = new TinjiContract(tinjiProvider, tinjiProgram, this.bankKeypair);
 
         const txSignature = await tinjiContract.depositForNFT(bankAccountAddress);
 

@@ -1,7 +1,6 @@
 import * as anchor from "@project-serum/anchor";
 import { AnchorProvider, Program, web3 } from "@project-serum/anchor";
 import { DepositForNft } from "../idl/deposit_for_nft";
-import { BankAccount } from "../contract/accounts";
 
 export class TinjiContract {
   readonly provider: AnchorProvider;

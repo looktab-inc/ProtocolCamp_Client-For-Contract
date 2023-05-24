@@ -1,7 +1,7 @@
 import { Wallet, web3 } from "@project-serum/anchor";
-import { getTinjiProgram, getTinjiProvider } from "./config/config";
+import { getTinjiProgram, getTinjiProvider } from "./config/contractConfig";
 import bankSecret from "./secret/my-wallet.json";
-import { TinjiContract } from "./modules/tinjiClient";
+import { TinjiContract } from "./modules/tinjiContract";
 
 // deposit - 0
 
