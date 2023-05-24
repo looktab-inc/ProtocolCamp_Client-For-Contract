@@ -47,7 +47,9 @@ async function main() {
 
   // 3. deposit for nft
   console.log("\n[02. Deposit for a NFT]");
-  const tx2 = await tinjiContract.depositForNFT(bankAccount);
+  await tinjiContract.depositForNFT(bankAccount.publicKey);
+  await tinjiContract.depositForNFT(bankAccount.publicKey);
+  const tx2 = await tinjiContract.depositForNFT(bankAccount.publicKey);
   console.log(tx2);
   bankWalletBalance = await tinjiProvider.connection.getBalance(
     bankWallet.publicKey
@@ -61,7 +63,7 @@ async function main() {
   // 4. withdraw for burned
   console.log("\n[03. Withdraw for Burned]");
   const tx3 = await tinjiContract.withdrawForBurned(
-    bankAccount,
+    bankAccount.publicKey,
     clientAccount.publicKey
   );
   console.log(tx3);
@@ -74,15 +76,29 @@ async function main() {
   console.log(`BankWallet Balance: ${bankWalletBalance}`);
   console.log(`Cleint Balance: ${clientBalance}`);
 
-  const tx4 = await tinjiContract.depositForNFT(bankAccount);
-  console.log(tx4);
   // 5. withdraw for Expried
   console.log("\n[04. Withdraw for Expired]");
   const tx5 = await tinjiContract.withdrawForExpired(
-    bankAccount,
+    bankAccount.publicKey,
     clientAccount.publicKey
   );
   console.log(tx5);
+  bankWalletBalance = await tinjiProvider.connection.getBalance(
+    bankWallet.publicKey
+  );
+  clientBalance = await tinjiProvider.connection.getBalance(
+    clientAccount.publicKey
+  );
+  console.log(`BankWallet Balance: ${bankWalletBalance}`);
+  console.log(`Cleint Balance: ${clientBalance}`);
+
+  // 6. withdraw for Verified
+  console.log("\n[05. Withdraw for Verified]");
+  const tx6 = await tinjiContract.withdrawForVerified(
+    bankAccount.publicKey,
+    clientAccount.publicKey
+  );
+  console.log(tx6);
   bankWalletBalance = await tinjiProvider.connection.getBalance(
     bankWallet.publicKey
   );

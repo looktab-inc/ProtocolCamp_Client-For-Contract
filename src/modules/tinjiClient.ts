@@ -41,15 +41,15 @@ export class TinjiContract {
   }
 
   // Deposit 0.01 SOl
-  async depositForNFT(bankAccount: web3.Keypair): Promise<string> {
-    const pdaAuthPubkey = this.getPdaAuthPubkey(bankAccount.publicKey);
+  async depositForNFT(bankAccountAddress: web3.PublicKey): Promise<string> {
+    const pdaAuthPubkey = this.getPdaAuthPubkey(bankAccountAddress);
     const solVaultPubkey = this.getSolVaultPubkey(pdaAuthPubkey);
 
     const transaction = await this.program.methods
       .depositForNft()
       .accounts({
         bankAuth: this.bankWallet.publicKey,
-        bankAccount: bankAccount.publicKey,
+        bankAccount: bankAccountAddress,
         pdaAuth: pdaAuthPubkey,
         solVault: solVaultPubkey,
         systemProgram: web3.SystemProgram.programId,
@@ -62,17 +62,17 @@ export class TinjiContract {
 
   // bank: 0.009, client: 0.001
   async withdrawForBurned(
-    bankAccount: web3.Keypair,
+    bankAccountAddress: web3.PublicKey,
     clientAddress: web3.PublicKey
   ): Promise<string> {
-    const pdaAuthPubKey = this.getPdaAuthPubkey(bankAccount.publicKey);
+    const pdaAuthPubKey = this.getPdaAuthPubkey(bankAccountAddress);
     const solVaultPubkey = this.getSolVaultPubkey(pdaAuthPubKey);
 
     const transaction = await this.program.methods
       .withdrawForBurned()
       .accounts({
         bankAuth: this.bankWallet.publicKey,
-        bankAccount: bankAccount.publicKey,
+        bankAccount: bankAccountAddress,
         pdaAuth: pdaAuthPubKey,
         solVault: solVaultPubkey,
         systemProgram: web3.SystemProgram.programId,
@@ -86,17 +86,17 @@ export class TinjiContract {
 
   // bank: 0.01, client: 0
   async withdrawForExpired(
-    bankAccount: web3.Keypair,
+    bankAccountAddress: web3.PublicKey,
     clientAddress: web3.PublicKey
   ): Promise<string> {
-    const pdaAuthPubKey = this.getPdaAuthPubkey(bankAccount.publicKey);
+    const pdaAuthPubKey = this.getPdaAuthPubkey(bankAccountAddress);
     const solVaultPubkey = this.getSolVaultPubkey(pdaAuthPubKey);
 
     const transaction = await this.program.methods
       .withdrawForExpired()
       .accounts({
         bankAuth: this.bankWallet.publicKey,
-        bankAccount: bankAccount.publicKey,
+        bankAccount: bankAccountAddress,
         pdaAuth: pdaAuthPubKey,
         solVault: solVaultPubkey,
         systemProgram: web3.SystemProgram.programId,
@@ -109,8 +109,25 @@ export class TinjiContract {
   }
 
   // bank: 0.001, client: 0.009
-  async withdrawForVerified(): Promise<string> {
-    const transaction = "";
+  async withdrawForVerified(
+    bankAccountAddress: web3.PublicKey,
+    clientAddress: web3.PublicKey
+  ): Promise<string> {
+    const pdaAuthPubKey = this.getPdaAuthPubkey(bankAccountAddress);
+    const solVaultPubkey = this.getSolVaultPubkey(pdaAuthPubKey);
+
+    const transaction = await this.program.methods
+      .withdrawForVerified()
+      .accounts({
+        bankAuth: this.bankWallet.publicKey,
+        bankAccount: bankAccountAddress,
+        pdaAuth: pdaAuthPubKey,
+        solVault: solVaultPubkey,
+        systemProgram: web3.SystemProgram.programId,
+        clientAccount: clientAddress,
+      })
+      .signers([this.bankWallet])
+      .rpc();
 
     return transaction;
   }
