@@ -1,6 +1,7 @@
 import * as anchor from "@project-serum/anchor";
 import { AnchorProvider, Program, web3 } from "@project-serum/anchor";
 import { DepositForNft } from "../idl/deposit_for_nft";
+import { BankAccount } from "../contract/accounts";
 
 export class TinjiContract {
   readonly provider: AnchorProvider;
@@ -39,6 +40,7 @@ export class TinjiContract {
     return transaction;
   }
 
+  // Deposit 0.01 SOl
   async depositForNFT(bankAccount: web3.Keypair): Promise<string> {
     const pdaAuthPubkey = this.getPdaAuthPubkey(bankAccount.publicKey);
     const solVaultPubkey = this.getSolVaultPubkey(pdaAuthPubkey);
@@ -58,6 +60,7 @@ export class TinjiContract {
     return transaction;
   }
 
+  // bank: 0.009, client: 0.001
   async withdrawForBurned(
     bankAccount: web3.Keypair,
     clientAddress: web3.PublicKey
@@ -81,12 +84,31 @@ export class TinjiContract {
     return transaction;
   }
 
-  async withdrawForExpired(): Promise<string> {
-    const transaction = "";
+  // bank: 0.01, client: 0
+  async withdrawForExpired(
+    bankAccount: web3.Keypair,
+    clientAddress: web3.PublicKey
+  ): Promise<string> {
+    const pdaAuthPubKey = this.getPdaAuthPubkey(bankAccount.publicKey);
+    const solVaultPubkey = this.getSolVaultPubkey(pdaAuthPubKey);
+
+    const transaction = await this.program.methods
+      .withdrawForExpired()
+      .accounts({
+        bankAuth: this.bankWallet.publicKey,
+        bankAccount: bankAccount.publicKey,
+        pdaAuth: pdaAuthPubKey,
+        solVault: solVaultPubkey,
+        systemProgram: web3.SystemProgram.programId,
+        clientAccount: clientAddress,
+      })
+      .signers([this.bankWallet])
+      .rpc();
 
     return transaction;
   }
 
+  // bank: 0.001, client: 0.009
   async withdrawForVerified(): Promise<string> {
     const transaction = "";
 
