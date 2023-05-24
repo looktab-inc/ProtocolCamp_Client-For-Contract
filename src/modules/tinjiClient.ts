@@ -6,6 +6,7 @@ import { BankAccount } from "../contract/accounts";
 export class TinjiContract {
   readonly provider: AnchorProvider;
   readonly program: Program<DepositForNft>;
+  // bankWallet should be the wallet that deployed smart contract.
   private bankWallet: web3.Keypair;
 
   readonly PDA_BASE_SEED: Uint8Array =

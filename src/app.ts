@@ -6,7 +6,7 @@ import { TinjiContract } from "./modules/tinjiClient";
 // deposit - 0
 
 async function main() {
-  // 0. my wallet - should be the wallet that deployed smart contract.
+  // 0. bank wallet - should be the wallet that deployed smart contract.
   const bankKeypair = web3.Keypair.fromSecretKey(Uint8Array.from(bankSecret));
   const bankWallet = new Wallet(bankKeypair);
 
