@@ -14,7 +14,7 @@ async function main() {
   // const bankWallet = new Wallet(bankKeypair);
 
   // 1. Provider and Contract Program
-  const tinjiProvider = await getTinjiProvider(bankWallet, "http://127.0.0.1:8899");
+  const tinjiProvider = await getTinjiProvider(bankWallet, "https://api.devnet.solana.com");
   const tinjiProgram = await getTinjiProgram(tinjiProvider);
 
   // airdrop into bankWallet
@@ -30,8 +30,11 @@ async function main() {
   console.log("\n[01. Initialize]");
   const bankAccount = web3.Keypair.generate();
   const clientAccount = web3.Keypair.generate();
+  const recommenderAccount = web3.Keypair.generate();
   console.log(`BankWallet Address: ${bankWallet.publicKey.toString()}`);
   console.log(`Client Address: ${clientAccount.publicKey.toString()}`);
+  console.log(`recommenderAccount Address: ${recommenderAccount.publicKey.toString()}`);
+  console.log(`BankAccount Address: ${bankAccount.publicKey.toString()}`);
   let bankWalletBalance = await tinjiProvider.connection.getBalance(
     bankWallet.publicKey
   );
@@ -64,7 +67,8 @@ async function main() {
   console.log("\n[03. Withdraw for Burned]");
   const tx3 = await tinjiContract.withdrawForBurned(
     bankAccount.publicKey,
-    clientAccount.publicKey
+    clientAccount.publicKey,
+    recommenderAccount.publicKey
   );
   console.log(tx3);
   bankWalletBalance = await tinjiProvider.connection.getBalance(
@@ -80,7 +84,8 @@ async function main() {
   console.log("\n[04. Withdraw for Expired]");
   const tx5 = await tinjiContract.withdrawForExpired(
     bankAccount.publicKey,
-    clientAccount.publicKey
+    clientAccount.publicKey,
+    recommenderAccount.publicKey
   );
   console.log(tx5);
   bankWalletBalance = await tinjiProvider.connection.getBalance(
@@ -96,7 +101,8 @@ async function main() {
   console.log("\n[05. Withdraw for Verified]");
   const tx6 = await tinjiContract.withdrawForVerified(
     bankAccount.publicKey,
-    clientAccount.publicKey
+    clientAccount.publicKey,
+    recommenderAccount.publicKey
   );
   console.log(tx6);
   bankWalletBalance = await tinjiProvider.connection.getBalance(
