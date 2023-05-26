@@ -2,6 +2,7 @@ import { Wallet, web3 } from "@project-serum/anchor";
 import { getTinjiProgram, getTinjiProvider } from "./config/contractConfig";
 import bankSecret from "./secret/my-wallet.json";
 import { TinjiContract } from "./modules/tinjiContract";
+import { TinjiNft } from "./modules/tinjiNft";
 
 // deposit - 0
 
@@ -115,6 +116,17 @@ async function main() {
   console.log(`Cleint Balance: ${clientBalance}`);
 
   //////////////////////// Tinji NFT
+
+  const tinjiNft = new TinjiNft("https://api.devnet.solana.com", bankKeypair);
+
+  const fileUri = "https://nftstorage.link/ipfs/bafybeigvwcqwdf752vvwggz64nbuuebff4kytug2zzsr75e6vbafmxrzzq";
+  const metadataUri = "https://nftstorage.link/ipfs/bafkreibn24kliedp2ka7rigsg5ooty5eagldvlbcwead4dufrvyojf5yoq"
+
+
+  const genericFile = await tinjiNft.downloadFile(fileUri);
+  console.log(genericFile);
+  const metadataJson = await tinjiNft.downloadMetadata(metadataUri);
+  console.log(metadataJson);
 
 
 }
