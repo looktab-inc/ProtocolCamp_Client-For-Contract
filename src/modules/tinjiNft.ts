@@ -9,14 +9,17 @@ import { web3 } from "@project-serum/anchor";
 import { signerIdentity } from "@metaplex-foundation/umi";
 import { generateSigner } from "@metaplex-foundation/umi";
 import { createNft } from "@metaplex-foundation/mpl-token-metadata";
+import * as mplMetadata from "@metaplex-foundation/mpl-token-metadata";
 
 export class TinjiNft {
   private umi: Umi;
   readonly bankKeypair: web3.Keypair;
+  readonly endpoint: string;
 
   constructor(network: string, bankKeypair: web3.Keypair) {
     this.umi = this.initUmi(network);
     this.bankKeypair = bankKeypair;
+    this.endpoint = network;
 
     const umiKeypair = {
       publicKey: umilib.publicKey(bankKeypair.publicKey),
@@ -99,14 +102,15 @@ export class TinjiNft {
   }
 
   async mintNft(
-    updateSigner: umilib.KeypairSigner,
+    // updateSigner: umilib.KeypairSigner,
     metadataUri: string
   ): Promise<umilib.KeypairSigner> {
     const mintSigner = generateSigner(this.umi);
 
-    const txResult = await createNft(this.umi, {
+    const txResult = await mplMetadata.createNft(this.umi, {
       mint: mintSigner,
-      authority: updateSigner,
+      // authority: updateSigner,
+      authority: this.umi.identity,
       name: "Store NFT minted from Tinji",
       uri: metadataUri,
       sellerFeeBasisPoints: umilib.percentAmount(9.99, 2),
@@ -114,6 +118,58 @@ export class TinjiNft {
 
     return mintSigner;
   }
+
+  async getNftMetadata(
+    nftAddress: umilib.PublicKey
+  ): Promise<mplMetadata.Metadata> {
+    const metadata = await mplMetadata.fetchMetadataFromSeeds(this.umi, {
+      mint: nftAddress,
+    });
+
+    return metadata;
+  }
+
+  async updateNftMetadata(
+    // updateAuth: umilib.KeypairSigner,
+    nftAddress: umilib.PublicKey,
+    originMetaData: mplMetadata.Metadata,
+    name: string,
+  ) {
+    // const tempUmi = createUmi(this.endpoint).use(signerIdentity(updateAuth));
+
+    const transactionBuilder = await mplMetadata.updateV1(this.umi, {
+      mint: nftAddress,
+      data: umilib.some({ ...originMetaData, name: name})
+    }).sendAndConfirm(this.umi);
+
+    // const transaction = transactionBuilder.buildWithLatestBlockhash();
+    
+    // updateAuth.signTransaction(transaction);
+
+    // this.umi.rpc.sendTransaction(transaction);
+
+    // await mplMetadata.updateV1(this.umi, {
+    //   mint: nftAddress,
+    //   data: umilib.some({ ...originMetaData, verified: verified})
+    // }).
+    // }).sendAndConfirm(this.umi);
+  }
+
+  // async burnNft(
+  //   ownerSigner: umilib.KeypairSigner,
+  //   metadataUri: string,
+  //   mintPubkey: umilib.PublicKey
+  // ) {
+  //   const txResult = await mplMetadata.burnNft(this.umi,{
+  //     owner: ownerSigner,
+  //     /** Mint of the NFT */
+  //     mint: mintPubkey,
+  //     /** Token account to close */
+  //     tokenAccount: PublicKey;
+  //     /** MasterEdition2 of the NFT */
+  //     masterEditionAccount: PublicKey;
+  //   })
+  // }
 
   generateSignerKeypair(
     keypair: web3.Keypair
