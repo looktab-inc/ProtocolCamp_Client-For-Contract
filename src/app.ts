@@ -141,18 +141,28 @@ async function main() {
   // console.log("[ Minted NFT ]");
   // console.log(umilib.base58PublicKey(mintSigner.publicKey));
 
-  const testMintPubkey = umilib.publicKey("8nU2ims8eYbyaTTmBFRAm2b95NR3td9fREqafEoNCaAL");
+  const testMintPubkey = umilib.publicKey("9QfZ4DyVpEEtjEuBkh6hyZ89WxdnmzUwoGSo5oRhFaPH");
 
-  const nftMetadata = await tinjiNft.getNftMetadata(testMintPubkey);
-  console.log("[ Nft Metadata ]");
-  console.log(nftMetadata);
+  // const nftMetadata = await tinjiNft.getNftMetadata(testMintPubkey);
+  // console.log("[ Nft Metadata ]");
+  // console.log(nftMetadata);
 
+  // update metadata
   // await tinjiNft.updateNftMetadata(clinetKeypairSigner, testMintPubkey, nftMetadata, true);
-  await tinjiNft.updateNftMetadata(testMintPubkey, nftMetadata, "Update Test");
+  // await tinjiNft.updateNftMetadata(testMintPubkey, nftMetadata, "Update Test");
 
-  const nftMetadata2 = await tinjiNft.getNftMetadata(testMintPubkey);
-  console.log("[ Nft Metadata - After Update ]");
-  console.log(nftMetadata2);
+  // const nftMetadata2 = await tinjiNft.getNftMetadata(testMintPubkey);
+  // console.log("[ Nft Metadata - After Update ]");
+  // console.log(nftMetadata2);
+
+  // burn nft
+  await tinjiNft.burnNft(bankKeypair, testMintPubkey);
+  console.log("burn NFT Finished");
+
+  // const nftMetadata2 = await tinjiNft.getNftMetadata(testMintPubkey);
+  // console.log("[ Nft Metadata ]");
+  // console.log(nftMetadata2);
+
 }
 
 main();
