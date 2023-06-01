@@ -35,34 +35,6 @@ export class TinjiNft {
       .use(nftStorageUploader());
   }
 
-  // 현재 CandyMachine 이용하면 구조가 훨씬 복잡해질 것으로 판단하에 주석 처리.
-  // async mintNft(
-  //     candyMachineAddress: umilib.PublicKey,
-  //     collectionNftAddress: umilib.PublicKey,
-  //     // bankAccountAddress: web3.PublicKey,
-  // ): Promise<umilib.PublicKey | null> {
-  //     const nftMint = generateSigner(this.umi);
-
-  //     // mint NFT from CandyMachine.
-  //     const txResult = await transactionBuilder()
-  //         .add(setComputeUnitLimit(this.umi, { units: 800_000 }))
-  //         .add(
-  //             mintV2(this.umi, {
-  //               candyMachine: candyMachineAddress,
-  //               nftMint: nftMint,
-  //               collectionMint: collectionNftAddress,
-  //               collectionUpdateAuthority: this.umi.identity.publicKey,
-  //             })
-  //         ).sendAndConfirm(this.umi);
-
-  //     console.log(txResult);
-  //     if (txResult.result.value.err == null) {
-  //         return nftMint.publicKey;
-  //     } else {
-  //         return null;
-  //     }
-  // }
-
   async uploadFile(
     fileContent: string | Uint8Array,
     fileName: string
@@ -134,8 +106,6 @@ export class TinjiNft {
     originMetaData: mplMetadata.Metadata,
     name: string,
   ) {
-    // const tempUmi = createUmi(this.endpoint).use(signerIdentity(updateAuth));
-
     const transactionBuilder = await mplMetadata.updateV1(this.umi, {
       mint: nftAddress,
       data: umilib.some({
@@ -144,17 +114,6 @@ export class TinjiNft {
       }),
     }).sendAndConfirm(this.umi);
 
-    // const transaction = transactionBuilder.buildWithLatestBlockhash();
-    
-    // updateAuth.signTransaction(transaction);
-
-    // this.umi.rpc.sendTransaction(transaction);
-
-    // await mplMetadata.updateV1(this.umi, {
-    //   mint: nftAddress,
-    //   data: umilib.some({ ...originMetaData, verified: verified})
-    // }).
-    // }).sendAndConfirm(this.umi);
   }
 
   async burnNft(
