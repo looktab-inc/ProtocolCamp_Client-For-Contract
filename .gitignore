@@ -176,7 +176,7 @@ dist
 
 # End of https://www.toptal.com/developers/gitignore/api/node,macos
 
-# src/secret/*.json
+src/secret/*.json
 
 src/**/*.js
 src/**/*.map
