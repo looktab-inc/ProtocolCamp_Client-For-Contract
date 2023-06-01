@@ -101,15 +101,15 @@ export class TinjiNft {
   }
 
   async mintNft(
-    // updateSigner: umilib.KeypairSigner,
+    updateSigner: umilib.KeypairSigner,
     metadataUri: string
   ): Promise<umilib.KeypairSigner> {
     const mintSigner = generateSigner(this.umi);
 
     const txResult = await mplMetadata.createNft(this.umi, {
       mint: mintSigner,
-      // authority: updateSigner,
-      authority: this.umi.identity,
+      authority: updateSigner,
+      // authority: this.umi.identity,
       name: "Store NFT minted from Tinji",
       uri: metadataUri,
       sellerFeeBasisPoints: umilib.percentAmount(9.99, 2),
@@ -138,7 +138,10 @@ export class TinjiNft {
 
     const transactionBuilder = await mplMetadata.updateV1(this.umi, {
       mint: nftAddress,
-      data: umilib.some({ ...originMetaData, name: name})
+      data: umilib.some({
+        ...originMetaData,
+        name: name
+      }),
     }).sendAndConfirm(this.umi);
 
     // const transaction = transactionBuilder.buildWithLatestBlockhash();

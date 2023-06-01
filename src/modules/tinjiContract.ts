@@ -64,7 +64,6 @@ export class TinjiContract {
   async withdrawForBurned(
     bankAccountAddress: web3.PublicKey,
     clientAddress: web3.PublicKey,
-    recommenderAddress: web3.PublicKey,
   ): Promise<string> {
     const pdaAuthPubKey = this.getPdaAuthPubkey(bankAccountAddress);
     const solVaultPubkey = this.getSolVaultPubkey(pdaAuthPubKey);
@@ -78,7 +77,6 @@ export class TinjiContract {
         solVault: solVaultPubkey,
         systemProgram: web3.SystemProgram.programId,
         clientAccount: clientAddress,
-        recommenderAccount: recommenderAddress,
       })
       .signers([this.bankWallet])
       .rpc();
@@ -90,7 +88,6 @@ export class TinjiContract {
   async withdrawForExpired(
     bankAccountAddress: web3.PublicKey,
     clientAddress: web3.PublicKey,
-    recommenderAddress: web3.PublicKey,
   ): Promise<string> {
     const pdaAuthPubKey = this.getPdaAuthPubkey(bankAccountAddress);
     const solVaultPubkey = this.getSolVaultPubkey(pdaAuthPubKey);
@@ -104,7 +101,6 @@ export class TinjiContract {
         solVault: solVaultPubkey,
         systemProgram: web3.SystemProgram.programId,
         clientAccount: clientAddress,
-        recommenderAccount: recommenderAddress,
       })
       .signers([this.bankWallet])
       .rpc();

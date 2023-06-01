@@ -133,15 +133,16 @@ async function main() {
   // console.log(metadataJson);
 
 
-  // const clientKeypair = web3.Keypair.generate();
-  // const clinetKeypairSigner = tinjiNft.generateSignerKeypair(clientKeypair);
+  const clientKeypair = web3.Keypair.generate();
+  const clinetKeypairSigner = tinjiNft.generateSignerKeypair(clientKeypair);
 
-  // const mintSigner = await tinjiNft.mintNft(clinetKeypairSigner, metadataUri);
+  const mintSigner = await tinjiNft.mintNft(clinetKeypairSigner, metadataUri);
   // const mintSigner = await tinjiNft.mintNft(metadataUri);
   // console.log("[ Minted NFT ]");
   // console.log(umilib.base58PublicKey(mintSigner.publicKey));
 
-  const testMintPubkey = umilib.publicKey("9QfZ4DyVpEEtjEuBkh6hyZ89WxdnmzUwoGSo5oRhFaPH");
+  // const testMintPubkey = umilib.publicKey("9QfZ4DyVpEEtjEuBkh6hyZ89WxdnmzUwoGSo5oRhFaPH");
+  const testMintPubkey = mintSigner.publicKey;
 
   // const nftMetadata = await tinjiNft.getNftMetadata(testMintPubkey);
   // console.log("[ Nft Metadata ]");
