@@ -113,7 +113,7 @@ export class TinjiNft {
         name: name
       }),
     }).sendAndConfirm(this.umi);
-
+    
   }
 
   async burnNft(
